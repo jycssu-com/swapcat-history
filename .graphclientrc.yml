@@ -1,0 +1,5 @@
+sources:
+  - name: swapcat
+    handler:
+      graphql:
+        endpoint: https://api.thegraph.com/subgraphs/name/jycssu-com/swapcat
