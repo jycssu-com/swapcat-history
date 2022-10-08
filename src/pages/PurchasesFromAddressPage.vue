@@ -77,6 +77,13 @@ export default defineComponent({
         format: value => new Date(value).toLocaleString(),
       },
       {
+        name: 'shortName',
+        label: 'Short Name',
+        sortable: true,
+        align: 'left',
+        field: item => item.property.shortName,
+      },
+      {
         name: 'quantity',
         label: 'Quantity',
         align: 'right',
@@ -90,6 +97,14 @@ export default defineComponent({
         align: 'right',
         sortable: true,
         field: item => item.price,
+        format: value => value.toFixed(2) + ' $',
+      },
+      {
+        name: 'realtPrice',
+        label: 'Realt Price',
+        align: 'right',
+        sortable: true,
+        field: item => item.token.value,
         format: value => value.toFixed(2) + ' $',
       },
       {
