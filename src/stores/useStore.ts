@@ -16,19 +16,20 @@ export const useStore = defineStore('store', () => {
     resolveInitialized = resolve
     rejectInitialized = reject
   })
+  const realTokenList = ref<RealToken[]>([])
   const tokenList = ref<Token[]>([])
   const loading = ref(false)
 
   async function fetchData () {
-    const availableTokenList = (await RealtRepository.getTokens())
+    realTokenList.value = (await RealtRepository.getTokens())
       .filter(token => token.blockchainAddresses.xDai.contract)
 
-    const addresses = availableTokenList
+    const addresses = realTokenList.value
       .map(token => token.blockchainAddresses.xDai.contract)
 
     const tokenPriceMap = _keyBy(await SwapcatRepository.getTokens({ addresses }), 'address')
 
-    tokenList.value = availableTokenList.map(item => ({
+    tokenList.value = realTokenList.value.map(item => ({
       ...item,
       swapcat: tokenPriceMap[(item.blockchainAddresses.xDai.contract).toLowerCase()],
     }))
@@ -60,5 +61,7 @@ export const useStore = defineStore('store', () => {
     fetch,
     getToken,
     tokenList,
+    realTokenList,
+    waitInitialized,
   }
 })

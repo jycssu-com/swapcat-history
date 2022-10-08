@@ -20,7 +20,7 @@
 <script lang="ts">
 import { QTableProps } from 'quasar'
 import { defineComponent } from 'vue'
-import { Token, useStore } from '../stores/useStore'
+import { useStore } from '../stores/useStore'
 
 export default defineComponent({
   name: 'IndexPage',
@@ -98,14 +98,9 @@ export default defineComponent({
       },
     ]
 
-    function onRowClick (event: Event, row: Token) {
-      console.log(row)
-    }
-
     return {
       store,
       columns,
-      onRowClick,
     }
   },
 })

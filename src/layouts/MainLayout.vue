@@ -38,6 +38,17 @@
             </q-item-label>
           </q-item-section>
         </q-item>
+        <q-item :to="{ name: 'PurchasesFromAddressPage' }" exact>
+          <q-item-section avatar>
+            <q-icon name="shopping_cart" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>Purchases from Address</q-item-label>
+            <q-item-label caption>
+              List of purchases from a wallet
+            </q-item-label>
+          </q-item-section>
+        </q-item>
       </q-list>
     </q-drawer>
 
