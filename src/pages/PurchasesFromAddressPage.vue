@@ -21,6 +21,24 @@
         />
       </div>
     </q-form>
+
+    <div class="row justify-center q-col-gutter-sm q-mb-md">
+      <div class="col-auto">
+        Nombre d'achat : {{ purchases.length }}
+      </div>
+      <span>|</span>
+      <div class="col-auto">
+        Total achat : {{ displayValueBuyed }}
+      </div>
+      <span>|</span>
+      <div class="col-auto">
+        Valeur Realt : {{ displayValueRealt }}
+      </div>
+      <span>|</span>
+      <div class="col-auto">
+        Différence : {{ displayValueProfit }} ({{ displayValueProfitPercent }})
+      </div>
+    </div>
     <q-table
       :loading="loading"
       :rows="purchases"
@@ -32,13 +50,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, computed } from 'vue'
 import { QTableProps } from 'quasar'
 import { SwapcatRepository } from 'src/api/swapcat.repository'
 import { AddressPurchase } from 'src/api/Swapcat/GetAddressPurchases'
 import { useStore } from '../stores/useStore'
 import formatDistance from 'date-fns/formatDistance'
 import _keyBy from 'lodash/keyBy'
+import _sumBy from 'lodash/sumBy'
 import { RealToken } from 'src/api/realt.repository'
 
 export default defineComponent({
@@ -66,6 +85,16 @@ export default defineComponent({
         loading.value = false
       }
     }
+
+    const sumValueBuyed = computed(() => _sumBy(purchases.value, item => item.price * item.quantity))
+    const sumValueRealt = computed(() => _sumBy(purchases.value, item => item.token.value * item.quantity))
+    const sumValueProfit = computed(() => sumValueRealt.value - sumValueBuyed.value)
+    const sumValueProfitPercent = computed(() => (sumValueProfit.value / (sumValueBuyed.value || 1) * 100))
+
+    const displayValueBuyed = computed(() => sumValueBuyed.value.toFixed(2) + ' $')
+    const displayValueRealt = computed(() => sumValueRealt.value.toFixed(2) + ' $')
+    const displayValueProfit = computed(() => sumValueProfit.value.toFixed(2) + ' $')
+    const displayValueProfitPercent = computed(() => sumValueProfitPercent.value.toFixed(2) + ' %')
 
     const columns: QTableProps['columns'] = [
       {
@@ -154,6 +183,10 @@ export default defineComponent({
       loading,
       purchases,
       columns,
+      displayValueBuyed,
+      displayValueRealt,
+      displayValueProfit,
+      displayValueProfitPercent,
     }
   },
 })
