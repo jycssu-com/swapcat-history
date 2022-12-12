@@ -17,9 +17,9 @@ const routes: RouteRecordRaw[] = [
       },
       {
         path: '/:tokenAddress',
-        name: 'PurchasesOnTokenPage',
+        name: 'TransactionsOnTokenPage',
         props: true,
-        component: () => import('../pages/PurchasesOnTokenPage.vue'),
+        component: () => import('../pages/TransactionsOnTokenPage.vue'),
       },
     ],
   },

@@ -10,7 +10,7 @@
       :rows-per-page-options="[0]"
       row-key="uuid"
       @row-click="(event, row) => $router.push({
-        name: 'PurchasesOnTokenPage',
+        name: 'TransactionsOnTokenPage',
         params: { tokenAddress: row.blockchainAddresses.xDai.contract },
       })"
     />

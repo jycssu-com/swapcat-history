@@ -61,7 +61,7 @@ import _sumBy from 'lodash/sumBy'
 import { RealToken } from 'src/api/realt.repository'
 
 export default defineComponent({
-  name: 'PurchasesOnTokenPage',
+  name: 'PurchasesFromAddressPage',
   setup () {
     const store = useStore()
     const address = ref<string>('')

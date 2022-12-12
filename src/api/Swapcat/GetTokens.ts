@@ -9,7 +9,7 @@ export interface SwapcatToken {
   address: string;
   unitPrice: number;
   quantity: number;
-  purchases: {
+  transactions: {
     price: number;
     quantity: number;
     buyerToken: string;
@@ -19,7 +19,7 @@ export interface SwapcatToken {
 interface GetTokens {
   tokens: {
     address: string;
-    purchases: {
+    transactions: {
       id: string;
       price: number;
       quantity: number;
@@ -32,13 +32,13 @@ interface GetTokensVariables {
   addresses: string[];
 }
 
-function parsePrice (purchase: GetTokens['tokens'][0]['purchases'][0]) {
+function parsePrice (purchase: GetTokens['tokens'][0]['transactions'][0]) {
   const buyerToken = purchase.offer.buyerToken.address
   return purchase.price / Math.pow(10, buyerToken === USDC ? 6 : 18)
 }
 
-function parsePurchase (purchases: GetTokens['tokens'][0]['purchases'][0][]) {
-  return purchases.map(purchase => ({
+function parsePurchase (transactions: GetTokens['tokens'][0]['transactions'][0][]) {
+  return transactions.map(purchase => ({
     price: parsePrice(purchase),
     quantity: purchase.quantity / Math.pow(10, 18),
     buyerToken: purchase.offer.buyerToken.address,
@@ -47,14 +47,14 @@ function parsePurchase (purchases: GetTokens['tokens'][0]['purchases'][0][]) {
 
 export function parseTokens (tokens: GetTokens['tokens'][0][]): SwapcatToken[] {
   return tokens.map(token => {
-    const purchases = parsePurchase(token.purchases)
-    const quantity = _sumBy(purchases, 'quantity')
+    const transactions = parsePurchase(token.transactions)
+    const quantity = _sumBy(transactions, 'quantity')
 
     return {
       address: token.address,
-      unitPrice: _sumBy(purchases, item => item.price * item.quantity) / quantity,
+      unitPrice: _sumBy(transactions, item => item.price * item.quantity) / quantity,
       quantity,
-      purchases,
+      transactions,
     }
   })
 }
@@ -68,7 +68,7 @@ export function getTokens (client: GraphQLClient) {
         query GetTokens ($addresses: [String]) {
           tokens (where: { address_in: $addresses }) {
             address
-            purchases (orderBy: createdAtTimestamp, orderDirection: desc, first: 5) {
+            transactions (orderBy: createdAtTimestamp, orderDirection: desc, first: 5) {
               offer { buyerToken { address } }
               price
               quantity
