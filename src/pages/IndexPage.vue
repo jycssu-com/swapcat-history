@@ -19,6 +19,7 @@
 
 <script lang="ts">
 import { QTableProps } from 'quasar'
+import { RealToken } from 'src/api/realt.repository'
 import { defineComponent } from 'vue'
 import { useStore } from '../stores/useStore'
 
@@ -95,6 +96,14 @@ export default defineComponent({
         sortable: true,
         field: item => !!item.blockchainAddresses.xDai.rmmPoolAddress,
         format: value => value ? 'Yes' : 'No',
+      },
+      {
+        name: 'supply',
+        label: 'Supply',
+        align: 'right',
+        sortable: true,
+        field: (item: RealToken) => item.token.supply * item.token.value,
+        format: value => value.toFixed(2) + ' $',
       },
     ]
 

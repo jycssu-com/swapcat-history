@@ -1,4 +1,4 @@
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import { RealToken, RealtRepository } from 'src/api/realt.repository'
 import { SwapcatRepository } from 'src/api/swapcat.repository'
@@ -53,6 +53,9 @@ export const useStore = defineStore('store', () => {
       address.toLowerCase() === item.blockchainAddresses.xDai.contract.toLowerCase())
   }
 
+  const realTokenAddresses = computed(() => realTokenList.value
+    .map(token => token.blockchainAddresses.xDai.contract))
+
   // Initial fetch
   void fetch()
 
@@ -63,5 +66,6 @@ export const useStore = defineStore('store', () => {
     tokenList,
     realTokenList,
     waitInitialized,
+    realTokenAddresses,
   }
 })

@@ -38,6 +38,19 @@
             </q-item-label>
           </q-item-section>
         </q-item>
+
+        <q-item :to="{ name: 'TransactionListPage' }" exact>
+          <q-item-section avatar>
+            <q-icon name="swap_horiz" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>List of transactions</q-item-label>
+            <q-item-label caption>
+              List of all transactions
+            </q-item-label>
+          </q-item-section>
+        </q-item>
+
         <q-item :to="{ name: 'PurchasesFromAddressPage' }" exact>
           <q-item-section avatar>
             <q-icon name="shopping_cart" />
